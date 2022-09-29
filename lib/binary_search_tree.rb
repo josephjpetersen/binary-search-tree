@@ -24,41 +24,53 @@ class Tree
   def insert(data, node = @root)
     comparison = node.data <=> data
     case comparison
+    when 0
+      nil
     when -1
-      return node.right_child = create_node(data) if node.right_child.nil?
-
-      insert(data, node.right_child)
+      node.right_child.nil? ? node.right_child = create_node(data) : insert(data, node.right_child)
     when 1
-      return node.left_child = create_node(data) if node.left_child.nil?
-
-      insert(data, node.left_child)
+      node.left_child.nil? ? node.left_child = create_node(data) : insert(data, node.left_child)
     end
   end
 
-#  def insert(node = @root, data)
-#    if data > node.data
-#      if node.right_child.nil?
-#        node.right_child = create_node(data)
-#      else
-#        insert(node.right_child, data)
-#      end
-#    elsif data < node.data
-#      if node.left_child.nil?
-#        node.left_child = create_node(data)
-#      else
-#        insert(node.left_child, data)
-#      end
-#    end
-#  end
+  def delete(data, node = @root)
+    return node if node.nil?
+
+    if node.data > data
+      node.left_child = delete(data, node.left_child)
+    elsif node.data < data
+      node.right_child = delete(data, node.right_child)
+    else
+      return node.right_child if node.left_child.nil?
+      return node.left_child if node.right_child.nil?
+
+      leftmost_node = leftmost_leaf(node.right_child)
+      node.data = leftmost_node.data
+      node.right_child = delete(leftmost_node.data, node.right_child)
+    end
+    node
+  end
+
+  def find(data, node = @root)
+    comparison = node.data <=> data
+    case comparison
+    when 0
+      node
+    when -1
+      node.right_child.nil? ? nil : find(data, node.right_child)
+    when 1
+      node.left_child.nil? ? nil : find(data, node.left_child)
+    end
+  end
 
   def create_node(data)
     Node.new(data)
   end
 
-  def last_node?(node)
-    return true if node.left_child.nil? && node.right_child.nil?
+  def leftmost_leaf(node)
+    node = node.left_child until node.left_child.nil?
 
-    false
+    node
   end
 
   def pretty_print(node = @root, prefix = '', is_left = true)

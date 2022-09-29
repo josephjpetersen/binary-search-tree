@@ -11,3 +11,7 @@ binary_search_tree.pretty_print
 binary_search_tree.insert(3)
 
 binary_search_tree.pretty_print
+
+binary_search_tree.delete(13)
+
+binary_search_tree.pretty_print
