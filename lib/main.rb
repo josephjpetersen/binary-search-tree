@@ -1,17 +1,39 @@
 require_relative 'binary_search_tree'
 
-test_array = [4, 8, 15, 16, 23, 42, 69, 93, 7, 64, 71, 99, 13, 66, 55]
-
-p test_array.uniq.sort
+test_array = (Array.new(15) { rand(1..100) })
 
 binary_search_tree = Tree.new(test_array)
 
 binary_search_tree.pretty_print
 
-binary_search_tree.insert(3)
+p 'Is the tree balanced?'
+p binary_search_tree.balanced?
+
+p 'Level Order Traversal'
+p binary_search_tree.level_order
+
+p 'Preorder Traversal'
+p binary_search_tree.preorder
+
+p 'Inorder Traversal'
+p binary_search_tree.inorder
+
+p 'Postorder Traversal'
+p binary_search_tree.postorder
+
+binary_search_tree.insert(123)
+binary_search_tree.insert(156)
+binary_search_tree.insert(101)
+binary_search_tree.insert(193)
+binary_search_tree.insert(113)
 
 binary_search_tree.pretty_print
 
-binary_search_tree.delete(13)
+p 'Is the tree balanced?'
+p binary_search_tree.balanced?
+
+p binary_search_tree.inorder
+
+binary_search_tree.rebalance!
 
 binary_search_tree.pretty_print

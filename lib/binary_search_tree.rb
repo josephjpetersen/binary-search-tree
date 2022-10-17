@@ -63,6 +63,79 @@ class Tree
     end
   end
 
+  def level_order(node = @root, queue = [], results = [])
+    block_given? ? yield(node) : results << node.data
+    queue << node.left_child unless node.left_child.nil?
+    queue << node.right_child unless node.right_child.nil?
+    return results if queue.empty?
+
+    level_order(queue.shift, queue, results)
+  end
+
+  def preorder(node = @root, results = [])
+    return if node.nil?
+
+    block_given? ? yield(node) : results << node.data
+    preorder(node.left_child, results)
+    preorder(node.right_child, results)
+
+    results
+  end
+
+  def inorder(node = @root, results = [])
+    return if node.nil?
+
+    inorder(node.left_child, results)
+    block_given? ? yield(node) : results << node.data
+    inorder(node.right_child, results)
+
+    results
+  end
+
+  def postorder(node = @root, results = [])
+    return if node.nil?
+
+    postorder(node.left_child, results)
+    postorder(node.right_child, results)
+    block_given? ? yield(node) : results << node.data
+
+    results
+  end
+
+  def height(node = @root, height_count = -1)
+    return height_count if node.nil?
+
+    height_count += 1
+    [height(node.left_child, height_count), height(node.right_child, height_count)].max
+  end
+
+  def depth(node, current_node = @root, depth_count = -1)
+    return nil if node.nil?
+
+    depth_count += 1
+    comparison = current_node.data <=> node.data
+
+    case comparison
+    when -1
+      depth(node, current_node.right_child, depth_count)
+    when 0
+      depth_count
+    when 1
+      depth(node, current_node.left_child, depth_count)
+    end
+  end
+
+  def balanced?
+    (height(@root.left_child) - height(@root.right_child)).abs <= 1
+  end
+
+  def rebalance!
+    new_array = inorder
+    @root = build_tree(new_array)
+  end
+
+  # Helper methods
+
   def create_node(data)
     Node.new(data)
   end
