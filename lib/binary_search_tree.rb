@@ -9,7 +9,7 @@ class Tree
     @root = build_tree(@tree_array)
   end
 
-  def build_tree(tree_array = @tree_array, start_point = 0, end_point = @tree_array.length - 1)
+  def build_tree(tree_array, start_point = 0, end_point = tree_array.length - 1)
     return nil if start_point > end_point
 
     mid_point = (start_point + end_point) / 2
@@ -130,8 +130,7 @@ class Tree
   end
 
   def rebalance!
-    new_array = inorder
-    @root = build_tree(new_array)
+    @root = build_tree(inorder)
   end
 
   # Helper methods
